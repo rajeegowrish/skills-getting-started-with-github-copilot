@@ -65,3 +65,85 @@ def signup_for_activity(activity_name: str, email: str):
     # Add student
     activity["participants"].append(email)
     return {"message": f"Signed up {email} for {activity_name}"}
+
+@app.get("/activities/{activity_name}/signup")
+def get_activity_details(activity_name: str, email: str):
+    """Get details of a specific activity"""
+    if activity_name not in activities:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    
+    activity = activities[activity_name]
+    if email not in activity["participants"]:
+        raise HTTPException(status_code=403, detail="You are not signed up for this activity")
+    return {
+        "activity": activity_name,
+        "description": activity["description"],
+        "schedule": activity["schedule"],  
+        "participants": activity["participants"]
+    }  
+
+    # ...existing code...
+
+# In-memory activity database
+activities = {
+    "Chess Club": {
+        "description": "Learn strategies and compete in chess tournaments",
+        "schedule": "Fridays, 3:30 PM - 5:00 PM",
+        "max_participants": 12,
+        "participants": ["michael@mergington.edu", "daniel@mergington.edu"]
+    },
+    "Programming Class": {
+        "description": "Learn programming fundamentals and build software projects",
+        "schedule": "Tuesdays and Thursdays, 3:30 PM - 4:30 PM",
+        "max_participants": 20,
+        "participants": ["emma@mergington.edu", "sophia@mergington.edu"]
+    },
+    "Gym Class": {
+        "description": "Physical education and sports activities",
+        "schedule": "Mondays, Wednesdays, Fridays, 2:00 PM - 3:00 PM",
+        "max_participants": 30,
+        "participants": ["john@mergington.edu", "olivia@mergington.edu"]
+    },
+    # Sports related activities
+    "Soccer Team": {
+        "description": "Join the school soccer team and compete in local leagues",
+        "schedule": "Tuesdays and Thursdays, 4:00 PM - 5:30 PM",
+        "max_participants": 18,
+        "participants": []
+    },
+    "Basketball Club": {
+        "description": "Practice basketball skills and play friendly matches",
+        "schedule": "Wednesdays, 3:30 PM - 5:00 PM",
+        "max_participants": 15,
+        "participants": []
+    },
+    # Artistic activities
+    "Drama Club": {
+        "description": "Participate in school plays and improve acting skills",
+        "schedule": "Mondays, 4:00 PM - 5:30 PM",
+        "max_participants": 20,
+        "participants": []
+    },
+    "Art Workshop": {
+        "description": "Explore painting, drawing, and other visual arts",
+        "schedule": "Fridays, 2:00 PM - 3:30 PM",
+        "max_participants": 16,
+        "participants": []
+    },
+    # Intellectual activities
+    "Math Olympiad": {
+        "description": "Prepare for math competitions and solve challenging problems",
+        "schedule": "Thursdays, 3:30 PM - 5:00 PM",
+        "max_participants": 10,
+        "participants": []
+    },
+    "Science Club": {
+        "description": "Conduct experiments and explore scientific concepts",
+        "schedule": "Tuesdays, 4:00 PM - 5:00 PM",
+        "max_participants": 14,
+        "participants": []
+    }
+}
+                     
+    
+    
